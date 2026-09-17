@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #FFB3C6;
+            box-sizing: border-box;
+            height: 100vh;
+            width: 100vw;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .container {
+            position: relative;
+            width: 450px;
+            height: 600px;
+        }
+
+        .snoopy-bg {
+            position: absolute;
+            padding: 0;
+            margin: 0;
+            width: 100%; 
+            height: 100%;  
+            border-radius: 25px;
+            max-width: 100%;
+            object-fit: fill;
+            z-index: 2;
+            box-sizing: border-box;
+            pointer-events: none;
+        }
+
+        .box {
+            padding: 40px 30px;
+            margin: 0;
+            width: 450px; 
+            height: 600px;  
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 25px;
+            text-align: center;
+            max-width: 100%;
+            position: relative;
+            box-sizing: border-box;
+            z-index: 3;
+            backdrop-filter: blur(1px);
+        }
+
+        .snoopy {
+            position: absolute;
+            top: -70px;
+            left: -60px;
+            width: 120px;
+            height: auto;
+            z-index: 10;
+        }
+
+        .snoopy1 {
+            position: absolute;
+            bottom: -50px;
+            right: -70px;
+            width: auto;
+            height: 250px;
+            z-index: 10;
+        }
+
+        .box h1 {
+            font-size: 45px;
+            margin-bottom: 5px;
+            font-weight: bolder;
+        }
+
+        .box p {
+            font-size: 18px;
+            margin-bottom: 20px;
+            padding: 5px;
+            text-align: center;
+        }
+
+        .input-group {
+            position: relative;
+            width: 100%;
+            max-width: 340px;
+            margin: 0 auto 15px auto;
+        }
+
+        .box .username, .box .password, .modal-input {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            padding-right: 50px;
+            border: 1px solid #9d9d9d;
+            border-radius: 25px;
+            font-size: 16px;
+            background-color: #e2dada;
+            color: #333;
+            box-sizing: border-box;
+        }
+
+        .forgot-link-container {
+            text-align: right;
+            max-width: 340px;
+            margin: -5px auto 20px auto;
+        }
+
+        .forgot-link {
+            font-size: 13px;
+            color: #555;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+        .peek-btn {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: bold;
+            color: #555;
+            user-select: none;
+        }
+
+        .box .login {
+            display: block;
+            width: 100%;
+            max-width: 340px;
+            padding: 15px;
+            margin: 10px auto 0 auto;
+            background-color: black;
+            color: #fff;
+            border-radius: 25px;
+            font-size: 18px;
+            cursor: pointer;
+            border: none;
+        }
+
+        a {
+            color: inherit;           
+            text-decoration: none;
+            font-weight: bold;
+        }
+    
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-box {
+            background: #fff;
+            padding: 25px 30px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 320px;
+            width: 85%;
+            box-shadow: 0px 10px 25px rgba(0,0,0,0.2);
+            border: 2px solid #FFB3C6;
+        }
+
+        .modal-box h3 {
+            margin: 0 0 10px 0;
+            font-size: 20px;
+        }
+
+        .modal-box p {
+            margin: 0 0 15px 0;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .modal-input {
+            margin-bottom: 12px;
+            padding-right: 15px;
+            font-size: 14px;
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 15px;
+        }
+
+        .modal-btn {
+            background-color: #FFB3C6;
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 15px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .modal-btn.cancel {
+            background-color: #e2dada;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="Snoopy3.png" alt="Snoopy" class="snoopy-bg">    
+        <div class="box">
+            <img src="Snoopy1.png" alt="Snoopy" class="snoopy">
+            <h1>Welcome!</h1>
+            <p>Log in to your account</p>
+
+            <form id="LoginForm">
+                <div class="input-group">
+                    <input class="username" type="text" id="username" name="username" placeholder="Enter your username...">
+                </div>
+
+                <div class="input-group">
+                    <input class="password" type="password" id="password" name="password" placeholder="Enter your password...">
+                    <button type="button" class="peek-btn" id="peekBtn">Peek</button>
+                </div>
+
+                <div class="forgot-link-container">
+                    <span class="forgot-link" id="forgotPasswordBtn">Forgot Password?</span>
+                </div>
+
+                <button class="login" type="submit">Log In</button>
+            </form>
+
+            <p>Don't have an account? <a href="../Register/Register.html">Sign up</a></p>
+            <img src="Snoopy2.png" alt="Snoopy" class="snoopy1">
+        </div>
+    </div>
+
+    <!-- Custom Modal Alert Container -->
+    <div class="modal-overlay" id="customAlert">
+        <div class="modal-box">
+            <p id="alertMessage">Alert text</p>
+            <button class="modal-btn" id="closeAlert">OK</button>
+        </div>
+    </div>
+
+    <!-- Reset Password Modal Container -->
+    <div class="modal-overlay" id="resetModal">
+        <div class="modal-box">
+            <h3>Reset Password</h3>
+            <p>Enter your username and new password.</p>
+            <input type="text" id="resetUsername" class="modal-input" placeholder="Your Username">
+            <input type="password" id="resetNewPassword" class="modal-input" placeholder="New Password (min 8 chars)">
+            
+            <div class="modal-actions">
+                <button class="modal-btn cancel" id="cancelReset">Cancel</button>
+                <button class="modal-btn" id="submitReset">Save</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const LoginForm = document.getElementById('LoginForm');
+        const passwordInput = document.getElementById('password');
+        const peekBtn = document.getElementById('peekBtn');
+        const customAlert = document.getElementById('customAlert');
+        const alertMessage = document.getElementById('alertMessage');
+        const closeAlert = document.getElementById('closeAlert');
+
+        // Reset Password elements
+        const forgotPasswordBtn = document.getElementById('forgotPasswordBtn');
+        const resetModal = document.getElementById('resetModal');
+        const cancelReset = document.getElementById('cancelReset');
+        const submitReset = document.getElementById('submitReset');
+        const resetUsername = document.getElementById('resetUsername');
+        const resetNewPassword = document.getElementById('resetNewPassword');
+
+        let isSuccess = false;
+
+        function showAlert(message, successState = false) {
+            alertMessage.textContent = message;
+            customAlert.style.display = 'flex';
+            isSuccess = successState;
+        }
+
+        closeAlert.addEventListener('click', function() {
+            customAlert.style.display = 'none';
+            if (isSuccess) {
+                setTimeout(function() {
+                    window.location.href = '../Main Letter/Main.html';
+                }, 1500);
+            }
+        });
+
+        peekBtn.addEventListener('mouseenter', function() {
+            if (passwordInput.value !== '') {
+                passwordInput.type = 'text';
+            }
+        });
+
+        peekBtn.addEventListener('mouseleave', function() {
+            passwordInput.type = 'password';
+        });
+
+        LoginForm.addEventListener('submit', function(event) {
+            event.preventDefault(); 
+
+            const username = document.getElementById('username').value.trim();
+            const password = passwordInput.value.trim();
+
+            if (username === '' && password === '') {
+                showAlert('Please fill in both fields.');
+                return;
+            } else if (username === '') {
+                showAlert('Username cannot be empty.');
+                return;
+            } else if (password === '') {
+                showAlert('Password cannot be empty.');
+                return;
+            } else if (password.length < 8) {
+                showAlert('Password length mismatch! Password must be at least 8 characters.');
+                return;
+            }
+
+            const storedUsers = JSON.parse(localStorage.getItem('snoopyUsers')) || [];
+            const userMatch = storedUsers.find(user => user.username === username && user.password === password);
+
+            if (userMatch) {
+                localStorage.setItem('snoopyUsername', username);
+                showAlert('Welcome back, ' + username + '! Redirecting shortly...', true);
+            } else {
+                showAlert('Account not found or invalid password! Please sign up first.');
+            }
+        });
+
+        // Forgot Password Modal Handlers
+        forgotPasswordBtn.addEventListener('click', function() {
+            resetUsername.value = '';
+            resetNewPassword.value = '';
+            resetModal.style.display = 'flex';
+        });
+
+        cancelReset.addEventListener('click', function() {
+            resetModal.style.display = 'none';
+        });
+
+        submitReset.addEventListener('click', function() {
+            const userVal = resetUsername.value.trim();
+            const passVal = resetNewPassword.value.trim();
+
+            if (userVal === '' || passVal === '') {
+                showAlert('Please fill out all fields in the reset form.');
+                return;
+            }
+
+            if (passVal.length < 8) {
+                showAlert('New password must be at least 8 characters long.');
+                return;
+            }
+
+            let storedUsers = JSON.parse(localStorage.getItem('snoopyUsers')) || [];
+            const userIndex = storedUsers.findIndex(user => user.username === userVal);
+
+            if (userIndex !== -1) {
+                storedUsers[userIndex].password = passVal;
+                localStorage.setItem('snoopyUsers', JSON.stringify(storedUsers));
+                resetModal.style.display = 'none';
+                showAlert('Password reset successfully! You can now log in.');
+            } else {
+                showAlert('Username not found! Please check spelling or register an account.');
+            }
+        });
+    </script>
+</body>
+</html>

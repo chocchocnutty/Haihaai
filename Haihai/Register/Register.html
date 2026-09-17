@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account</title>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #FFB3C6;
+            box-sizing: border-box;
+            height: 100vh;
+            width: 100vw;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .container {
+            position: relative;
+            width: 450px;
+            height: 600px;
+        }
+
+        .snoopy-bg {
+            position: absolute;
+            padding: 0;
+            margin: 0;
+            width: 100%; 
+            height: 100%;  
+            border-radius: 25px;
+            max-width: 100%;
+            object-fit: fill;
+            z-index: 2;
+            box-sizing: border-box;
+            pointer-events: none;
+        }
+
+        .box {
+            padding: 30px 25px;
+            margin: 0;
+            width: 450px; 
+            height: 600px;  
+            background-color: rgba(255, 255, 255, 0.85);
+            border-radius: 25px;
+            text-align: center;
+            max-width: 100%;
+            position: relative;
+            box-sizing: border-box;
+            z-index: 3;
+            backdrop-filter: blur(1px);
+        }
+
+        .snoopy1 {
+            position: absolute;
+            top: 128px;
+            right: 50px;
+            width: auto;
+            height: 60px;
+            z-index: 10;
+        }
+
+        .snoopy2 {
+            position: absolute;
+            bottom: 0px;
+            left: 20px;
+            width: auto;
+            height: 120px;
+            z-index: 10;
+        }
+
+        .box h1 {
+            font-size: 45px;
+            margin-bottom: 5px;
+            font-weight: bolder;
+        }
+
+        .box p {
+            font-size: 18px;
+            margin-bottom: 20px;
+            padding: 5px;
+            text-align: center;
+        }
+
+        .input-group {
+            position: relative;
+            width: 100%;
+            max-width: 350px;
+            margin: 0 auto 15px auto;
+        }
+
+        .box .username, .box .password, .box .password-confirmation {
+            width: 100%;
+            padding: 15px;
+            padding-right: 60px;
+            border: 1px solid #9d9d9d;
+            border-radius: 25px;
+            font-size: 16px;
+            background-color: #e2dada;
+            color: #333;
+            box-sizing: border-box;
+        }
+
+        .peek-btn {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: bold;
+            color: #555;
+            user-select: none;
+        }
+
+        .box .signup {
+            display: block;
+            width: 100%;
+            max-width: 350px;
+            padding: 15px;
+            margin: 20px auto 0 auto;
+            background-color: black;
+            color: #fff;
+            border: none;
+            border-radius: 25px;
+            font-size: 18px;
+            cursor: pointer;
+            box-sizing: border-box;
+        }
+
+        a {
+            color: inherit;           
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-box {
+            background: #fff;
+            padding: 25px 30px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 300px;
+            width: 80%;
+            box-shadow: 0px 10px 25px rgba(0,0,0,0.2);
+            border: 2px solid #FFB3C6;
+        }
+
+        .modal-box p {
+            margin: 0 0 20px 0;
+            font-size: 16px;
+            color: #333;
+        }
+
+        .modal-btn {
+            background-color: #FFB3C6;
+            color: #000;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 15px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img class="snoopy-bg" src="Snoopy3.png" alt="Snoopy Background">
+        <div class="box">
+            <img src="Snoopy4.png" alt="Snoopy" class="snoopy2">
+            <img src="Snoopy5.png" alt="Snoopy" class="snoopy1">
+            <h1>Create Account</h1>
+            <p>Sign up to get started</p>
+            
+            <form id="SignupForm">
+                <div class="input-group">
+                    <input class="username" type="text" id="username" name="username" placeholder="Username">
+                </div>
+                
+                <div class="input-group">
+                    <input class="password" type="password" id="password" name="password" placeholder="Password">
+                    <button type="button" class="peek-btn" id="peekBtn1">Peek</button>
+                </div>
+                
+                <div class="input-group">
+                    <input class="password-confirmation" type="password" id="password-confirmation" name="password-confirmation" placeholder="Confirm Password">
+                    <button type="button" class="peek-btn" id="peekBtn2">Peek</button>
+                </div>
+
+                <button class="signup" type="submit">Sign Up</button>
+            </form>
+            
+            <p>Already have an account? <a href="../Login/Login.html">Log in</a></p>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="customAlert">
+        <div class="modal-box">
+            <p id="alertMessage">Alert text</p>
+            <button class="modal-btn" id="closeAlert">OK</button>
+        </div>
+    </div>
+
+    <script>
+        const signupForm = document.getElementById('SignupForm');
+        const passwordInput = document.getElementById('password');
+        const confirmInput = document.getElementById('password-confirmation');
+        
+        const peekBtn1 = document.getElementById('peekBtn1');
+        const peekBtn2 = document.getElementById('peekBtn2');
+        
+        const customAlert = document.getElementById('customAlert');
+        const alertMessage = document.getElementById('alertMessage');
+        const closeAlert = document.getElementById('closeAlert');
+
+        let isSuccessRedirect = false;
+
+        function showAlert(msg) {
+            alertMessage.textContent = msg;
+            customAlert.style.display = 'flex';
+        }
+
+        closeAlert.addEventListener('click', function() {
+            customAlert.style.display = 'none';
+            if (isSuccessRedirect) {
+                window.location.href = "../Login/Login.html";
+            }
+        });
+
+        peekBtn1.addEventListener('mouseenter', function() {
+            if (passwordInput.value !== '') {
+                passwordInput.type = 'text';
+            }
+        });
+
+        peekBtn1.addEventListener('mouseleave', function() {
+            passwordInput.type = 'password';
+        });
+
+        peekBtn2.addEventListener('mouseenter', function() {
+            if (confirmInput.value !== '') {
+                confirmInput.type = 'text';
+            }
+        });
+
+        peekBtn2.addEventListener('mouseleave', function() {
+            confirmInput.type = 'password';
+        });
+
+        signupForm.addEventListener('submit', function(event) {
+            event.preventDefault(); 
+
+            const username = document.getElementById('username').value.trim();
+            const password = passwordInput.value.trim();
+            const passwordConfirmation = confirmInput.value.trim();
+
+            if (username === '' || password === '' || passwordConfirmation === '') {
+                showAlert("Please fill in all fields.");
+                return;
+            } else if (password !== passwordConfirmation) {
+                showAlert("Passwords do not match! Please verify your password.");
+                return;
+            } else if (password.length < 8) {
+                showAlert("Password length mismatch! Password must be at least 8 characters long.");
+                return;
+            }
+
+            // Retrieve registered users from localStorage or initialize empty array
+            const storedUsers = JSON.parse(localStorage.getItem('snoopyUsers')) || [];
+
+            // Check if username already exists
+            const userExists = storedUsers.some(user => user.username === username);
+
+            if (userExists) {
+                showAlert("Username already taken! Please choose a different one.");
+            } else {
+                // Save new user details
+                storedUsers.push({ username: username, password: password });
+                localStorage.setItem('snoopyUsers', JSON.stringify(storedUsers));
+
+                isSuccessRedirect = true;
+                showAlert("Account created successfully!");
+            }
+        });
+    </script>
+</body>
+</html>

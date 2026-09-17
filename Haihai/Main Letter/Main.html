@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snoopy Experience</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            width: 100vw;
+            background-color: #FFB3C6;
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* ENVELOPE SCENE STYLES */
+        .scene {
+            position: absolute;
+            width: 320px;
+            height: 220px;
+            z-index: 5;
+            perspective: 1000px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .envelope-wrapper {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transform-style: preserve-3d;
+            overflow: visible;
+        }
+
+        .flap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-left: 160px solid transparent;
+            border-right: 160px solid transparent;
+            border-top: 115px solid #ffffff;
+            transform-origin: top;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease 0.3s;
+            z-index: 5;
+            filter: drop-shadow(0px 3px 4px rgba(0,0,0,0.1));
+            backface-visibility: hidden;
+        }
+
+        .flap-snoopy {
+            position: absolute;
+            top: -105px;
+            left: -30px;
+            width: 60px;
+            height: auto;
+            pointer-events: none;
+            backface-visibility: hidden;
+        }
+
+        .pocket-left {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-left: 160px solid #f9f9f9;
+            border-bottom: 110px solid transparent;
+            border-top: 110px solid transparent;
+            border-top-left-radius: 12px;
+            border-bottom-left-radius: 12px;
+            z-index: 3;
+            pointer-events: none;
+        }
+
+        .pocket-right {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 0;
+            height: 0;
+            border-right: 160px solid #f9f9f9;
+            border-bottom: 110px solid transparent;
+            border-top: 110px solid transparent;
+            border-top-right-radius: 12px;
+            border-bottom-right-radius: 12px;
+            z-index: 3;
+            pointer-events: none;
+        }
+
+        .pocket-bottom {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-left: 160px solid transparent;
+            border-right: 160px solid transparent;
+            border-bottom: 115px solid #f4f4f4;
+            border-bottom-left-radius: 12px;
+            border-bottom-right-radius: 12px;
+            z-index: 3;
+            pointer-events: none;
+            filter: drop-shadow(0px -1px 3px rgba(0,0,0,0.08));
+        }
+
+        .envelope-snoopy-1 {
+            position: absolute;
+            bottom: 10px;
+            left: 15px;
+            width: 55px;
+            height: auto;
+            z-index: 4;
+            pointer-events: none;
+        }
+
+        .envelope-snoopy-2 {
+            position: absolute;
+            bottom: 10px;
+            right: 15px;
+            width: 55px;
+            height: auto;
+            z-index: 4;
+            pointer-events: none;
+        }
+
+        .envelope-snoopy-3 {
+            position: absolute;
+            top: 50%;
+            left: 15px;
+            transform: translateY(-50%);
+            width: 45px;
+            height: auto;
+            z-index: 4;
+            pointer-events: none;
+        }
+
+        .envelope-snoopy-4 {
+            position: absolute;
+            top: 50%;
+            right: 15px;
+            transform: translateY(-50%);
+            width: 45px;
+            height: auto;
+            z-index: 4;
+            pointer-events: none;
+        }
+
+        /* LETTER BOX - MAXIMIZED AND SCROLLABLE */
+        .letter-box {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 420px;
+            height: 520px;
+            max-width: 85vw;
+            max-height: 80vh;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+            padding: 35px 30px;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease;
+            z-index: 2;
+            opacity: 0;
+            text-align: center;
+            overflow-y: auto;
+            overflow-x: hidden;
+            background-color: rgba(255, 255, 255, 0.75);
+            transform: translate(-50%, -40%) scale(0.4);
+            pointer-events: none;
+        }
+
+        .letter-box::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .letter-box::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 10px;
+        }
+
+        .letter-box::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+
+        .letter-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: blur(5px);
+            opacity: 0.45;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .letter-content {
+            position: relative;
+            z-index: 1;
+            min-height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .letter-box h2 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            color: #222;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .letter-box p {
+            color: #333;
+            font-size: 16px;
+            line-height: 1.6;
+            font-weight: 500;
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .envelope-wrapper.open .flap {
+            transform: rotateX(180deg);
+            z-index: 1;
+            opacity: 0;
+        }
+
+        .envelope-wrapper.open .letter-box {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+            z-index: 10;
+            pointer-events: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ENVELOPE SCENE -->
+    <div class="scene" id="envelopeScene">
+        <div class="envelope-wrapper" id="envelope">
+            <div class="flap">
+                <img class="flap-snoopy" src="Snoopy1.png" alt="Snoopy Flap">
+            </div>
+            
+            <div class="pocket-left"></div>
+            <div class="pocket-right"></div>
+            <div class="pocket-bottom"></div>
+
+            <img class="envelope-snoopy-1" src="Snoopy2.png" alt="Snoopy Left">
+            <img class="envelope-snoopy-2" src="Snoopy4.png" alt="Snoopy Right">
+            <img class="envelope-snoopy-3" src="Snoopy5.png" alt="Snoopy Side Left">
+            <img class="envelope-snoopy-4" src="Snoopy1.png" alt="Snoopy Side Right">
+            
+            <div class="letter-box">
+                <img class="letter-bg" src="Snoopy3.png" alt="Snoopy Letter Background">
+                <div class="letter-content">
+                    <h2 id="welcomeHeading">Hello!</h2>
+                    <p>Here is your letter stored inside the Snoopy envelope.</p>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                    <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const envelope = document.getElementById('envelope');
+        const welcomeHeading = document.getElementById('welcomeHeading');
+
+        const savedUsername = localStorage.getItem('snoopyUsername');
+        if (savedUsername) {
+            welcomeHeading.textContent = 'Welcome, ' + savedUsername + '!';
+        }
+
+        envelope.addEventListener('click', function(event) {
+            if (event.target.closest('.letter-box')) return;
+            envelope.classList.toggle('open');
+        });
+    </script>
+</body>
+</html>
